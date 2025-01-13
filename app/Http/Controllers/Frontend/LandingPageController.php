@@ -12,4 +12,18 @@ class LandingPageController extends Controller
         return view('welcome');
     }
     
+    function inscription()
+    {
+        return view('inscription');
+    }
+
+    function condition()
+    {
+        return view('conditions_d_utilisation');
+    }
+
+    function politique()
+    {
+        return view('politique');
+    }
 }

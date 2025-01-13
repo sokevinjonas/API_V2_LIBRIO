@@ -9,6 +9,9 @@ use App\Http\Controllers\Admin\LivreController;
 
 // Landing Page
 Route::get('/', [LandingPageController::class, 'index'])->name('landing');
+Route::get('/devenir-partenaire-de-librio', [LandingPageController::class, 'inscription'])->name('landing.inscription');
+Route::get('/condition-utilisation-librio', [LandingPageController::class, 'condition'])->name('landing.condition');
+Route::get('/politique-confidentialite-librio', [LandingPageController::class, 'politique'])->name('landing.politique');
 
 // Admin Panel
 Route::prefix('admin')->name('admin.')->group(function () {

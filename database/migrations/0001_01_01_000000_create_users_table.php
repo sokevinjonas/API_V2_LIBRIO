@@ -17,6 +17,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', ['admin', 'moderateur', 'vendeur', 'client'])->default('client'); // Rôle de l'utilisateur
+            $table->boolean('terms')->default(false);
+            $table->string('country');
+            $table->enum('accountType', ['personal', 'business', 'admin'])->default('personal');
+            $table->string('profile_picture')->nullable(); // Image de profil
+            $table->text('bio')->nullable(); // Bio du vendeur ou autres
             $table->rememberToken();
             $table->timestamps();
         });
