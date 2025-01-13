@@ -45,8 +45,30 @@
             font-weight: bold;
             transition: background-color 0.3s ease;
         }
+        .container .btn-custom {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #333;
+            color: #007bff;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .container .btn-co {
+            display: inline-block;
+            text-decoration: none;
+            background-color: green;
+            color: #ffffff;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
         .container a:hover {
-            background-color: #0056b3;
+            background-color: #4a77a7;
         }
         .container .secondary-text {
             margin-top: 1rem;
@@ -54,7 +76,6 @@
             color: #777;
         }
         .container .secondary-text a {
-            color: #639edd;
             color: #fff;
             text-decoration: none;
         }
@@ -62,22 +83,32 @@
 </head>
 <body>
     <div class="container">
-        <h1 style="color: green">Validez votre inscription</h1>
-        <p>
-            Merci de vous être inscrit ! Nous avons envoyé un email à l'adresse que vous avez fournie. 
-            Veuillez vérifier votre boîte mail pour valider votre inscription.
-        </p>
-        <p>
-            Si vous ne recevez pas l'email :
-        </p>
+        @if (session('success'))
+            <h2 style="color: green">{{ session('success') }}</h2>
+        @elseif (session('error'))
+            <h2 style="color: red">{{ session('error') }}</h2>
+        @endif
+        
+        <!-- Affichage du message dynamique -->
+        <p>{{ $message }}</p>
+    
+        <p>Si vous ne recevez pas l'email :</p>
         <ul style="text-align: left; padding-left: 20px;">
             <li>Vérifiez votre boîte de spam.</li>
             <li>Assurez-vous que l'adresse email fournie est correcte.</li>
         </ul>
-        <a href="#" class="btn">Renvoyer l'email de validation</a>
+    
+        <!-- Ajoutez une condition pour afficher le lien pour renvoyer l'email uniquement si nécessaire -->
+        @if($message === 'Veuillez vérifier votre email pour confirmer votre inscription! Nous avons envoyé un email à l\'adresse que vous avez fournie.')
+            <a href="{{ route('landing.resendValidationEmail', ['email' => $user->email]) }}" class="btn">Renvoyer l'email de validation</a>
+        @elseif($message === 'Votre inscription est confirmée. Vous pouvez vous connecter.')
+            <a href="{{ route('login') }}" class="btn-co">Se connecter</a>
+        @endif
+    
         <p class="secondary-text">
-            Toujours pas reçu ? Contactez notre <a href="#">support technique</a>.
+            Toujours pas reçu ? Contactez notre <a class="btn-custom" href="#">support technique</a>.
         </p>
-    </div>
+    </div>    
+    
 </body>
 </html>

@@ -55,39 +55,36 @@
                   </div>
 
                   <!-- Affichage des erreurs  y-->
-                  <div class="alert alert-danger" style="display:none;">
-                    <ul>
-                      <!-- Liste d'erreurs à insérer ici -->
-                      <li>Erreur exemple 1</li>
-                      <li>Erreur exemple 2</li>
-                    </ul>
-                  </div>
+                  @if (session('success'))
+                    <div class="alert alert-success">
+                      {{ session('success') }}
+                    </div>
+                  @elseif (session('error'))
+                    <div class="alert alert-danger">
+                      {{ session('error') }}
+                    </div>
+                  @endif
 
-                  <form action="" method="POST" class="row g-3 needs-validation" novalidate>
-                    <!-- Champ Email -->
+                  <form action="{{ route('authenticate') }}" method="POST" class="row g-3 needs-validation" novalidate>
+                    @csrf
                     <div class="col-12">
-                      <label for="yourEmail" class="form-label">Email</label>
-                      <div class="input-group has-validation">
-                        <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="email" name="email" class="form-control" id="yourEmail" required>
-                        <div class="invalid-feedback">Veuillez entrer votre email.</div>
+                        <label for="yourEmail" class="form-label">Email</label>
+                        <div class="input-group has-validation">
+                          <span class="input-group-text" id="inputGroupPrepend">@</span>
+                          <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="yourEmail" required value="{{ old('email') }}">
+                          @error('email')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                          @enderror
+                        </div>
                       </div>
-                    </div>
 
-                    <!-- Champ Mot de passe -->
-                    <div class="col-12">
-                      <label for="yourPassword" class="form-label">Mot de passe</label>
-                      <input type="password" name="password" class="form-control" id="yourPassword" required>
-                      <div class="invalid-feedback">Veuillez entrer votre mot de passe.</div>
-                    </div>
-
-                    <!-- Se souvenir de moi -->
-                    <div class="col-12">
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
-                        <label class="form-check-label" for="rememberMe">Se souvenir de moi</label>
+                      <div class="col-12">
+                        <label for="yourPassword" class="form-label">Mot de passe</label>
+                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" id="yourPassword" required>
+                        @error('password')
+                          <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                       </div>
-                    </div>
 
                     <!-- Bouton de connexion -->
                     <div class="col-12">

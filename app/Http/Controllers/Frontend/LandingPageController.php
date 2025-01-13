@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Frontend;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\NewRegisterUserNotification;
 use App\Http\Requests\Users\NewInscriptionFromLanginPageRequest;
 
 class LandingPageController extends Controller
@@ -30,17 +33,47 @@ class LandingPageController extends Controller
     {
         return view('politique');
     }
-    function messageNonReception()
+    function messageNonReception(Request $request)
     {
-        return view('non-reception-message');
+
+        $userEmail = $request->input('user');
+
+        $user = User::where('email', $userEmail)->first();
+
+        if ($user && !$user->email_verified_at) {
+            $message = 'Veuillez vérifier votre email pour confirmer votre inscription! Nous avons envoyé un email à l\'adresse que vous avez fournie.';
+        } else {
+            $message = 'Votre inscription est confirmée. Vous pouvez vous connecter.';
+        }
+        return view('non-reception-message', compact('message', 'user'))->with('success', 'Un email de validation a été envoyé.');
     }
+
+    public function resendValidationEmail($email)
+{
+    // Vérifiez si l'utilisateur existe et que l'email n'est pas déjà vérifié
+    $user = User::where('email', $email)->first();
+
+    if ($user && is_null($user->email_verified_at)) {
+        // Si l'utilisateur existe et n'est pas vérifié, renvoyer l'email de validation
+        $user->notify(new NewRegisterUserNotification($user));
+
+        return redirect()->route('landing.messageNonReception', ['user' => $user->email])
+            ->with('success', 'Un nouvel email de validation a été envoyé.');
+    }
+
+    return redirect()->route('landing.messageNonReception', ['user' => $email])
+        ->with('error', 'L\'utilisateur n\'existe pas ou est déjà vérifié.');
+}
+
+
 
     function new_inscription_form_landing_page(NewInscriptionFromLanginPageRequest $request)
     {
-        // dd($request->all());
         DB::beginTransaction();
         try {
+
             $data = $request->validated();
+
             $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
@@ -50,14 +83,22 @@ class LandingPageController extends Controller
                 'accountType' => $data['accountType'],
                 'terms' => $data['terms'],
             ]);
-            // Envoi d'un email de confirmation
 
+            // Envoi d'un email de confirmation
+           $user->notify(new NewRegisterUserNotification($user));
+
+           Log::info("Email de confirmation envoyé à : {$user->email}");
+           
             DB::commit();
-            
-            return redirect()->route('landing.messageNonReception')->with('success', 'Votre compte a été créé !');
-            //code...
+
+            return redirect()->route('landing.messageNonReception', ["user"=> $user->email])->with('success', 'Votre compte a été créé !');
+
         } catch (\Exception $e) {
+
             DB::rollBack();
+
+            Log::error("Erreur lors de l'envoi de l'email de confirmation : " . $e->getMessage());
+
             return back()->with('error', 'Une erreur est survenue : ' . $e->getMessage());
         }
     }

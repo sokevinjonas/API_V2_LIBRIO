@@ -1,4 +1,4 @@
-{{-- @dump($errors->all()) --}}
+@dump($errors->all())
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -192,7 +192,7 @@
 
                 <!-- Lien de connexion -->
                 <div class="login-link">
-                    Déjà membre ? <a href="{{route('admin.login')}}">Se connecter</a>
+                    Déjà membre ? <a href="{{route('login')}}">Se connecter</a>
                 </div>
             </form>
         </div>
