@@ -3,7 +3,7 @@
 
     <!-- Dashboard -->
     <li class="nav-item">
-      <a class="nav-link collapsed" href="{{route('admin.dashboard')}}">
+      <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : 'collapsed' }} " href="{{route('admin.dashboard')}}">
         <i class="bi bi-grid"></i>
         <span>Tableau de bord</span>
       </a>
@@ -31,18 +31,18 @@
 
     <!-- Gestion des livres -->
     <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#book-nav" data-bs-toggle="collapse" href="#">
+      <a class="nav-link {{request()->routeIs('admin.livres.*') ? '' : 'collapsed'}}" data-bs-target="#book-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-book"></i><span>Gestion des livres</span>
         <i class="bi bi-chevron-down ms-auto"></i>
       </a>
-      <ul id="book-nav" class="nav-content collapse">
+      <ul id="book-nav" class="nav-content {{request()->routeIs('livres') ? 'show' : ''}}">
         <li>
-          <a href="{{ route('admin.livres.create') }}">
+          <a href="{{ route('admin.livres.create') }}" class="{{request()->routeIs('admin.livres.create') ? 'active' : ''}}">
             <i class="bi bi-circle"></i><span>Ajouter un livre</span>
           </a>
         </li>
         <li>
-          <a href="{{ route('admin.livres.index') }}">
+          <a href="{{ route('admin.livres.index') }}" class="{{request()->routeIs('admin.livres.index') ? 'active' : ''}}">
             <i class="bi bi-circle"></i><span>Liste des livres</span>
           </a>
         </li>
@@ -51,23 +51,12 @@
 
     <!-- Gestion des catégories -->
     <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#category-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-folder"></i><span>Catégories</span>
-        <i class="bi bi-chevron-down ms-auto"></i>
+      <a class="nav-link {{ request()->routeIs('admin.categories.index') ? 'active' : 'collapsed' }}" 
+         href="{{ route('admin.categories.index') }}">
+        <i class="bi bi-folder"></i><span>Liste des Catégories</span>
       </a>
-      <ul id="category-nav" class="nav-content collapse">
-        <li>
-          <a href="./categories-create.html">
-            <i class="bi bi-circle"></i><span>Ajouter une catégorie</span>
-          </a>
-        </li>
-        <li>
-          <a href="{{route('admin.categories.index')}}">
-            <i class="bi bi-circle"></i><span>Liste des catégories</span>
-          </a>
-        </li>
-      </ul>
     </li>
+    
 
     <!-- Rapports et statistiques -->
     <li class="nav-item">
