@@ -84,7 +84,7 @@ class LivreController extends Controller
             return redirect()->back()->with('success', 'Livre créé avec succès.');
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Erreur lors du téléchargement du fichier PDF : ' . $e->getMessage());
+            // Log::error('Erreur lors du téléchargement du fichier PDF : ' . $e->getMessage());
             return back()->with('error', 'Une erreur est survenue : ' . $e->getMessage());
         }
     }

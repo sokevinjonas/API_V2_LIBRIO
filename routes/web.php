@@ -13,18 +13,20 @@ Route::get('/devenir-partenaire-de-librio', [LandingPageController::class, 'insc
 Route::post('/devenir-partenaire-de-librio-post', [LandingPageController::class, 'new_inscription_form_landing_page'])->name('landing.new_inscription');
 Route::get('/condition-utilisation-librio', [LandingPageController::class, 'condition'])->name('landing.condition');
 Route::get('/politique-confidentialite-librio', [LandingPageController::class, 'politique'])->name('landing.politique');
+Route::get('/message_non-reception', [LandingPageController::class, 'messageNonReception'])->name('landing.messageNonReception');
+
+// Authentification
+Route::get('login', [AuthentificationController::class, 'loginForm'])->name('login');
+Route::post('login_new_user', [AuthentificationController::class, 'login']);
 
 // Admin Panel
 Route::prefix('admin')->name('admin.')->group(function () {
-    // Authentification
-    Route::get('login', [AuthentificationController::class, 'loginForm'])->name('login');
-    // Route::post('login', [AuthController::class, 'login']);
     // Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
     // Tableau de bord
-    // Route::middleware('auth:admin')->group(function () {
+    Route::middleware('auth')->group(function () {
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::resource('categories', CategoryController::class);
         Route::resource('livres', LivreController::class);
-    // });
+    });
 });

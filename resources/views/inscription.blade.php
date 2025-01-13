@@ -1,3 +1,4 @@
+{{-- @dump($errors->all()) --}}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -104,66 +105,84 @@
             <h1 class="form-title text-center">Créer votre compte</h1>
 
             <!-- Formulaire -->
-            <form>
+            <form action="{{route('landing.new_inscription')}}" method="POST">
+                @csrf
                 <!-- Type de compte -->
                 <div class="account-type-selector">
                     <label class="form-label">Type de compte</label>
                     <div class="d-flex gap-4">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="accountType" id="personal" checked>
+                            <input class="form-check-input" type="radio" name="accountType" value="personal" id="personal" {{ old('accountType') == 'personal' ? 'checked' : '' }}>
                             <label class="form-check-label" for="personal">
                                 Particulier
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="accountType" id="business">
+                            <input class="form-check-input" type="radio" name="accountType" value="business" id="business"  {{ old('accountType') == 'business' ? 'checked' : '' }}>
                             <label class="form-check-label" for="business">
                                 Entreprise
                             </label>
                         </div>
                     </div>
+                    @error('accountType')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <!-- Nom complet -->
                 <div class="mb-3">
                     <label for="fullName" class="form-label">Nom complet</label>
-                    <input type="text" class="form-control" id="fullName" required>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"  required>
+                    @error('name')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <!-- Email -->
                 <div class="mb-3">
                     <label for="email" class="form-label">Adresse email</label>
-                    <input type="email" class="form-control" id="email" required>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}"  required>
+                    @error('email')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <!-- Pays -->
                 <div class="mb-3">
                     <label for="country" class="form-label">Pays d'origine</label>
-                    <select class="form-select" id="country" required>
+                    <select class="form-select" id="country" name="country" required>
                         <option value="">Sélectionnez votre pays</option>
-                        <option value="FR">France</option>
-                        <option value="BE">Belgique</option>
-                        <option value="CH">Suisse</option>
-                        <option value="CA">Canada</option>
-                        <!-- Autres pays... -->
+                        <option value="FR" {{ old('country') == 'FR' ? 'selected' : '' }}>France</option>
+                        <option value="BE" {{ old('country') == 'BE' ? 'selected' : '' }}>Belgique</option>
+                        <option value="CH" {{ old('country') == 'CH' ? 'selected' : '' }}>Suisse</option>
+                        <option value="CA" {{ old('country') == 'CA' ? 'selected' : '' }}>Canada</option>
                     </select>
+                    @error('country')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <!-- Mot de passe -->
                 <div class="mb-3">
                     <label for="password" class="form-label">Mot de passe</label>
-                    <input type="password" class="form-control" id="password" required>
+                    <input type="password" class="form-control" name="password" id="password" required>
                     <div class="form-text">8 caractères minimum, incluant une majuscule et un chiffre</div>
+                    @error('password')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <!-- CGU -->
                 <div class="mb-3">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="terms" required>
+                        <input class="form-check-input" type="checkbox" id="terms"  name="terms" value="1" required>
                         <label class="form-check-label" for="terms">
                             J'accepte les <a href="{{route('landing.condition')}}" target="_target" class="text-decoration-none">conditions d'utilisation</a> et la <a target="_target" href="{{route('landing.politique')}}" class="text-decoration-none">politique de confidentialité</a>
                         </label>
                     </div>
+                    @error('terms')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <!-- Bouton de soumission -->

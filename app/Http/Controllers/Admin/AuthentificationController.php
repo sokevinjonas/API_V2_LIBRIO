@@ -12,4 +12,6 @@ class AuthentificationController extends Controller
     {
         return view('admin.auth.login');
     }
+
+    function login(){}
 }
