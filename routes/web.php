@@ -17,6 +17,7 @@ Route::get('/politique-confidentialite-librio', [LandingPageController::class, '
 //Message de Validation
 Route::get('/message_non-reception', [LandingPageController::class, 'messageNonReception'])->name('landing.messageNonReception');
 Route::get('/renvoyer-email-validation/{email}', [LandingPageController::class, 'resendValidationEmail'])->name('landing.resendValidationEmail');
+Route::get('account/verify/{email}', [LandingPageController::class, 'verifyEmail'])->name('landing.account.verify');
 
 // Authentification
 Route::get('login', [AuthentificationController::class, 'loginForm'])->name('login');

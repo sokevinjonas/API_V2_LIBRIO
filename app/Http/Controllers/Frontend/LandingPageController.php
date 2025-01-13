@@ -49,23 +49,21 @@ class LandingPageController extends Controller
     }
 
     public function resendValidationEmail($email)
-{
-    // Vérifiez si l'utilisateur existe et que l'email n'est pas déjà vérifié
-    $user = User::where('email', $email)->first();
+    {
+        // Vérifiez si l'utilisateur existe et que l'email n'est pas déjà vérifié
+        $user = User::where('email', $email)->first();
 
-    if ($user && is_null($user->email_verified_at)) {
-        // Si l'utilisateur existe et n'est pas vérifié, renvoyer l'email de validation
-        $user->notify(new NewRegisterUserNotification($user));
+        if ($user && is_null($user->email_verified_at)) {
+            // Si l'utilisateur existe et n'est pas vérifié, renvoyer l'email de validation
+            $user->notify(new NewRegisterUserNotification($user));
 
-        return redirect()->route('landing.messageNonReception', ['user' => $user->email])
-            ->with('success', 'Un nouvel email de validation a été envoyé.');
+            return redirect()->route('landing.messageNonReception', ['user' => $user->email])
+                ->with('success', 'Un nouvel email de validation a été envoyé.');
+        }
+
+        return redirect()->route('landing.messageNonReception', ['user' => $email])
+            ->with('error', 'L\'utilisateur n\'existe pas ou est déjà vérifié.');
     }
-
-    return redirect()->route('landing.messageNonReception', ['user' => $email])
-        ->with('error', 'L\'utilisateur n\'existe pas ou est déjà vérifié.');
-}
-
-
 
     function new_inscription_form_landing_page(NewInscriptionFromLanginPageRequest $request)
     {
@@ -85,10 +83,10 @@ class LandingPageController extends Controller
             ]);
 
             // Envoi d'un email de confirmation
-           $user->notify(new NewRegisterUserNotification($user));
+            $user->notify(new NewRegisterUserNotification($user));
 
-           Log::info("Email de confirmation envoyé à : {$user->email}");
-           
+            Log::info("Email de confirmation envoyé à : {$user->email}");
+            
             DB::commit();
 
             return redirect()->route('landing.messageNonReception', ["user"=> $user->email])->with('success', 'Votre compte a été créé !');
@@ -101,5 +99,24 @@ class LandingPageController extends Controller
 
             return back()->with('error', 'Une erreur est survenue : ' . $e->getMessage());
         }
+    }
+
+    public function verifyEmail($email)
+    {
+        // Vérifier si l'utilisateur existe avec l'email passé dans l'URL
+        $user = User::where('email', $email)->first();
+
+        // Si l'utilisateur existe et que l'email n'est pas encore validé
+        if ($user && is_null($user->email_verified_at)) {
+            // Valider l'email en enregistrant la date actuelle dans l'attribut email_verified_at
+            $user->email_verified_at = now();
+            $user->save();
+
+            // Vous pouvez ajouter une notification ou un message flash ici si nécessaire
+            return redirect()->route('admin.dashboard')->with('success', 'Votre email a été validé avec succès!');
+        }
+
+        // Si l'utilisateur n'existe pas ou si l'email est déjà validé
+        return redirect()->route('login')->with('error', 'L\'email de validation est invalide ou l\'utilisateur est déjà vérifié.');
     }
 }

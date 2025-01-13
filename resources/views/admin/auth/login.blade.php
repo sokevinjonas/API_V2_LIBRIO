@@ -24,7 +24,14 @@
   <link href="{{ asset ('assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
   <link href="{{ asset ('assets/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
   <link href="{{ asset ('assets/css/style.css')}}" rel="stylesheet">
-
+  <style>
+    .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e0e0e0;
+        }
+  </style>
 </head>
 
 <body>
@@ -90,6 +97,10 @@
                     <div class="col-12">
                       <button class="btn btn-primary w-100" type="submit">Se connecter</button>
                     </div>
+
+                    <div class="login-link">
+                      Je ne suis pas de membre? <a href="{{route('landing.inscription')}}">S'inscrire ici</a>
+                  </div>
                   </form>
 
                 </div>

@@ -1,4 +1,4 @@
-@dump($errors->all())
+{{-- @dump($errors->all()) --}}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
