@@ -6,16 +6,24 @@ use App\Models\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
+use App\Repositories\CategoryRepository;
 use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
+    public $categoryRepository;
+
+    public function __construct(CategoryRepository $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {   
-        $categories = Category::all();
+        $categories = $this->categoryRepository->indexCategories();
+        // dd($categories);
         return view('admin.categorie.index', ['categories' => $categories]);
     }
 
@@ -36,15 +44,11 @@ class CategoryController extends Controller
         DB::beginTransaction();
         try
         {
-            $validated = $request->validated();
             // Crée une nouvelle catégorie
-            Category::create([
-                'name' => $validated['name'],
-                'description' => $validated['description'] ?? null,
-            ]);
+            $this->categoryRepository->createCategory($request->validated());
 
             DB::commit(); // Valide la transaction
-            return redirect()->back()->with('success', 'Catégorie mise à jour avec succès.');
+            return redirect()->back()->with('success', 'Catégorie crée avec avec succès.');
         } catch (\Exception $e){
             DB::rollBack(); // Annule la transaction en cas d'erreur
             return redirect()->back()->with('error', 'Une erreur est survenue lors de la création.');
@@ -102,8 +106,8 @@ class CategoryController extends Controller
         DB::beginTransaction();
 
         try {
-            $category->delete();
-
+            // $category->delete();
+            $this->categoryRepository->deleteCategory($category);
             DB::commit(); // Valide la transaction
 
             return redirect()->back()->with('success', 'Catégorie supprimée avec succès.');
