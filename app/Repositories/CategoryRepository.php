@@ -23,7 +23,7 @@ class CategoryRepository implements CategoryInterface
 
     function updateCategory(array $data, $category)
     {
-        
+        return $category->update($data);
     }
 
     function deleteCategory($category){

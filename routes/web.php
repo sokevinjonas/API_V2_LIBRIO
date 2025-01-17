@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\LivreController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UtilisateurController;
 use App\Http\Controllers\Frontend\LandingPageController;
 use App\Http\Controllers\Admin\AuthentificationController;
 
@@ -30,7 +32,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Tableau de bord
     Route::middleware(['auth', 'CheckEmailValidated'])->group(function () {
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        Route::resource('categories', CategoryController::class);
+        Route::resource('categories', CategoryController::class)->except('show', 'edit');
         Route::resource('livres', LivreController::class);
+        Route::resource('users', UtilisateurController::class)->except('show','edit', 'update', 'destroy', 'create');
+        Route::resource('profile', ProfileController::class)->except('show','edit', 'update', 'destroy', 'create');
     });
 });

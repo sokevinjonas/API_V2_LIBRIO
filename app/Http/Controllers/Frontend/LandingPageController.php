@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Notification;
 use App\Notifications\NewRegisterUserNotification;
 use App\Http\Requests\Users\NewInscriptionFromLanginPageRequest;
 

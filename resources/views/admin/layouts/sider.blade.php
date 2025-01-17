@@ -9,33 +9,32 @@
       </a>
     </li>
 
-    <!-- Gestion des utilisateurs (Admin uniquement) -->
+        <!-- Profil -->
     <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#user-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-people"></i><span>Gestion des utilisateurs</span>
-        <i class="bi bi-chevron-down ms-auto"></i>
+      <a class="nav-link {{ request()->routeIs('admin.profile.*') ? 'active' : 'collapsed' }}" href="{{route('admin.profile.index')}}">
+        <i class="bi bi-person-circle"></i>
+        <span>Mon profil</span>
       </a>
-      <ul id="user-nav" class="nav-content collapse">
-        <li>
-          <a href="./users-create.html">
-            <i class="bi bi-circle"></i><span>Ajouter un utilisateur</span>
-          </a>
-        </li>
-        <li>
-          <a href="./users-index.html">
-            <i class="bi bi-circle"></i><span>Liste des utilisateurs</span>
-          </a>
-        </li>
-      </ul>
     </li>
+    
+    <!-- Gestion des utilisateurs (Admin uniquement) -->
+    @if (Auth::user()->role === 'admin')
+      
+    <li class="nav-item">
+      <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : 'collapsed' }}" href="{{route('admin.users.index')}}">
+        <i class="bi bi-people"></i><span>Gestion des utilisateurs</span>
+      </a>
+    </li>
+    @endif
+      
 
     <!-- Gestion des livres -->
     <li class="nav-item">
-      <a class="nav-link {{request()->routeIs('admin.livres.*') ? '' : 'collapsed'}}" data-bs-target="#book-nav" data-bs-toggle="collapse" href="#">
+      <a class="nav-link {{request()->routeIs('admin.livres.*') ? 'active' : 'collapsed'}}" data-bs-target="#book-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-book"></i><span>Gestion des livres</span>
         <i class="bi bi-chevron-down ms-auto"></i>
       </a>
-      <ul id="book-nav" class="nav-content {{request()->routeIs('livres') ? 'show' : ''}}">
+      <ul id="book-nav" class="nav-content collapsed">
         <li>
           <a href="{{ route('admin.livres.create') }}" class="{{request()->routeIs('admin.livres.create') ? 'active' : ''}}">
             <i class="bi bi-circle"></i><span>Ajouter un livre</span>
@@ -60,7 +59,7 @@
 
     <!-- Rapports et statistiques -->
     <li class="nav-item">
-      <a class="nav-link collapsed" href="./statistics.html">
+      <a class="nav-link collapsed" href="#">
         <i class="bi bi-bar-chart"></i>
         <span>Rapports et statistiques</span>
       </a>
@@ -68,17 +67,9 @@
 
     <!-- Paramètres -->
     <li class="nav-item">
-      <a class="nav-link collapsed" href="./settings.html">
+      <a class="nav-link collapsed" href="#">
         <i class="bi bi-gear"></i>
         <span>Paramètres</span>
-      </a>
-    </li>
-
-    <!-- Profil -->
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="./profile.html">
-        <i class="bi bi-person-circle"></i>
-        <span>Mon profil</span>
       </a>
     </li>
 

@@ -14,7 +14,7 @@
 {{-- @dump($errors->all()) --}}
 <div class="row">
       <div class="card-body p-3">
-        <a href="{{ route('admin.livres.create') }}" class="btn btn-primary float-start">Ajouter un article</a>
+        <a href="{{ route('admin.livres.create') }}" class="btn btn-primary float-start">Ajouter un nouveau livre</a>
       </div>
 </div>
 <div class="card">

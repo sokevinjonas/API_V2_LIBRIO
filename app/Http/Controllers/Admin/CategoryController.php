@@ -83,10 +83,7 @@ class CategoryController extends Controller
             $validated = $request->validated();
 
             // Met à jour la catégorie
-            $category->update([
-                'name' => $validated['name'],
-                'description' => $validated['description'] ?? $category->description,
-            ]);
+            $this->categoryRepository->updateCategory($validated, $category);
 
             DB::commit(); // Valide la transaction
 
