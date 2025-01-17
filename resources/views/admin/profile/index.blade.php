@@ -13,7 +13,7 @@
   <div class="col-xl-4">
     <div class="card">
       <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-        <img src="https://dummyimage.com/120x120/ced4da/6c757d.jpg" alt="Profil" class="rounded-circle"
+        <img src="{{asset('storage/'. $user->profile_picture ?? 'assets/img/profile-img.jpg')}}" alt="{{$user->name}}" class="rounded-circle"
           id="profileImagePreview1">
         <h2> {{$user->name}} </h2>
         <h3> {{$user->role}} </h3>
@@ -62,20 +62,23 @@
           <!-- Profile Edit -->
           <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
             <!-- Profile Edit Form -->
-            <form method="POST" action="" enctype="multipart/form-data">
+            <form method="POST" action="{{route('admin.profile.update', $user->id )}}" enctype="multipart/form-data">
+              @csrf
+              @method('PUT')
+              
+               <!-- Image de profil -->
               <div class="row mb-3">
                 <label class="col-md-4 col-lg-3 col-form-label">Image de profil</label>
                 <div class="col-md-8 col-lg-9">
-                  <img src="https://dummyimage.com/120x120/ced4da/6c757d.jpg" alt="Profil"
-                    id="profileImagePreview" height="120px">
+                  <img src="{{asset('storage/'. $user->profile_picture ?? 'assets/img/profile-img.jpg')}}" 
+                    alt="Profil" id="profileImagePreview" height="120px">
                   <div class="pt-2">
-                    <input type="file" name="avatar" id="avatarUpload" class="form-control" accept="image/*"
-                      hidden>
-                    <button type="button" class="btn btn-primary btn-sm" title="Upload new profile image"
+                    <input type="file" name="profile_picture" id="avatarUpload" class="form-control" accept="image/*" hidden>
+                    <button type="button" class="btn btn-primary btn-sm" title="Télécharger une nouvelle image de profil" 
                       id="uploadBtn">
                       <i class="bi bi-upload"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm" title="Remove my profile image"
+                    <button type="button" class="btn btn-danger btn-sm" title="Supprimer l'image de profil" 
                       id="deletePreviewImageBtn">
                       <i class="bi bi-trash"></i>
                     </button>
@@ -83,62 +86,71 @@
                 </div>
               </div>
 
+              <!-- Nom complet -->
               <div class="row mb-3">
                 <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Nom complet</label>
                 <div class="col-md-8 col-lg-9">
-                  <input name="name" type="text" class="form-control" id="fullName" value="John Doe">
+                  <input name="name" type="text" class="form-control" id="fullName" value="{{ auth()->user()->name }}">
                 </div>
               </div>
 
+              <!-- Email -->
               <div class="row mb-3">
-                <label for="username" class="col-md-4 col-lg-3 col-form-label">Pseudo</label>
+                <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                 <div class="col-md-8 col-lg-9">
-                  <input name="username" type="text" class="form-control" id="username" value="johndoe">
+                  <input name="email" type="email" class="form-control" id="email" value="{{ auth()->user()->email }}">
                 </div>
               </div>
 
+              <!-- Pays -->
               <div class="row mb-3">
-                <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                <label for="country" class="col-md-4 col-lg-3 col-form-label">Pays</label>
                 <div class="col-md-8 col-lg-9">
-                  <input name="email" type="email" class="form-control" id="Email" value="john.doe@example.com">
+                  <input name="country" type="text" class="form-control" id="country" value="{{ auth()->user()->country }}">
                 </div>
               </div>
 
+              <!-- Bio -->
+              <div class="row mb-3">
+                <label for="bio" class="col-md-4 col-lg-3 col-form-label">Bio</label>
+                <div class="col-md-8 col-lg-9">
+                  <textarea name="bio" id="bio" class="form-control" rows="3">{{ auth()->user()->bio }}</textarea>
+                </div>
+              </div>
+
+              <!-- Bouton Enregistrer -->
               <div class="text-center">
-                <button type="submit" class="btn btn-primary">Enregistrer les
-                  modifications</button>
+                <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
               </div>
+
             </form>
+          
             <!-- End Profile Edit Form -->
           </div>
 
           <!-- Change Password -->
           <div class="tab-pane fade pt-3" id="profile-change-password">
             <!-- Change Password Form -->
-            <form method="POST" action="">
+            <form method="POST" action="{{ route('admin.admin.profile.updatePassword') }}">
+              @csrf
               <div class="row mb-3">
-                <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Mot de passe
-                  actuel</label>
+                <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Mot de passe actuel</label>
                 <div class="col-md-8 col-lg-9">
-                  <input name="current_password" type="password" class="form-control" id="currentPassword"
-                    required>
+                  <input name="current_password" type="password" class="form-control" id="currentPassword" required>
                 </div>
               </div>
 
               <div class="row mb-3">
-                <label for="password" class="col-md-4 col-lg-3 col-form-label">Nouveau mot de
-                  passe</label>
+                <label for="password" class="col-md-4 col-lg-3 col-form-label">Nouveau mot de passe</label>
                 <div class="col-md-8 col-lg-9">
                   <input name="password" type="password" class="form-control" id="password" required>
                 </div>
               </div>
 
               <div class="row mb-3">
-                <label for="password_confirmation" class="col-md-4 col-lg-3 col-form-label">Confirmez le
-                  nouveau mot de passe</label>
+                <label for="password_confirmation" class="col-md-4 col-lg-3 col-form-label">Confirmez le nouveau mot de passe</label>
                 <div class="col-md-8 col-lg-9">
-                  <input name="password_confirmation" type="password" class="form-control"
-                    id="password_confirmation" required>
+                  <input name="password_confirmation" type="password" class="form-control" id="password_confirmation" required>
                 </div>
               </div>
 
@@ -148,10 +160,36 @@
             </form>
             <!-- End Change Password Form -->
           </div>
+          <!-- End Change Password -->
+
 
         </div><!-- End Bordered Tabs -->
       </div>
     </div>
   </div>
 </div>
+@endsection
+@section('js')
+<script>
+  // Gestion de la prévisualisation de l'image
+  document.getElementById('uploadBtn').addEventListener('click', () => {
+    document.getElementById('avatarUpload').click();
+  });
+
+  document.getElementById('avatarUpload').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        document.getElementById('profileImagePreview').setAttribute('src', event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  document.getElementById('deletePreviewImageBtn').addEventListener('click', () => {
+    document.getElementById('profileImagePreview').setAttribute('src', 'https://dummyimage.com/120x120/ced4da/6c757d.jpg');
+    document.getElementById('avatarUpload').value = ''; // Réinitialise l'input
+  });
+</script>
 @endsection

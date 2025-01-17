@@ -35,6 +35,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('categories', CategoryController::class)->except('show', 'edit');
         Route::resource('livres', LivreController::class);
         Route::resource('users', UtilisateurController::class)->except('show','edit', 'update', 'destroy', 'create');
-        Route::resource('profile', ProfileController::class)->except('show','edit', 'update', 'destroy', 'create');
+        Route::resource('profile', ProfileController::class)->except('show','edit', 'destroy', 'create');
+        Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('admin.profile.updatePassword');
     });
 });

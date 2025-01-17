@@ -175,33 +175,6 @@ class LivreController extends Controller
      */
     public function destroy(Livre $livre)
     {
-        DB::beginTransaction();
-
-    // try {
-    //     // Chemin du dossier contenant les fichiers du livre
-    //     $folderName = pathinfo($livre->cover_image, PATHINFO_DIRNAME); // Récupère le chemin du dossier
-    //     $folderPath = public_path($folderName);
-
-    //     // Suppression des fichiers et du dossier
-    //     if (file_exists($folderPath)) {
-    //         $files = glob($folderPath . '/*'); // Liste tous les fichiers du dossier
-    //         foreach ($files as $file) {
-    //             if (is_file($file)) {
-    //                 unlink($file); // Supprime le fichier
-    //             }
-    //         }
-    //         rmdir($folderPath); // Supprime le dossier
-    //     }
-
-    //     // Suppression du livre dans la base de données
-    //     $livre->delete();
-
-    //     DB::commit();
-
-    //     return redirect()->back()->with('success', 'Livre supprimé avec succès.');
-    // } catch (\Exception $e) {
-    //     DB::rollBack();
-    //     return back()->withErrors('Une erreur est survenue : ' . $e->getMessage());
-    // }
+        
     }
 }

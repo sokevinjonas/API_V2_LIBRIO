@@ -4,6 +4,7 @@ namespace App\Interface;
 
 interface ProfileInterface
 {
-    //
-    function getProfile();
+    public function getProfile();
+    public function updateProfile(array $data, $user);
+    public function updatePassword($user, string $password);
 }
