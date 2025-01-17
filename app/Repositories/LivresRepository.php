@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Models\Livre;
+
 class LivresRepository
 {
     /**
@@ -11,4 +13,13 @@ class LivresRepository
     {
         //
     }
+
+   public function apiIndexLivre(){
+    return Livre::with('category')->latest()->get();
+   }
+
+   public function apiShowLivre(Livre $livre){
+    dd($livre);
+   }
 }
+

@@ -29,12 +29,31 @@
       
 
     <!-- Gestion des livres -->
-    <li class="nav-item">
-      <a class="nav-link {{request()->routeIs('admin.livres.*') ? 'active' : 'collapsed'}}" data-bs-target="#book-nav" data-bs-toggle="collapse" href="#">
+    {{-- <li class="nav-item">
+      <a class="nav-link" data-bs-target="#book-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-book"></i><span>Gestion des livres</span>
         <i class="bi bi-chevron-down ms-auto"></i>
       </a>
-      <ul id="book-nav" class="nav-content collapsed">
+      <ul id="book-nav" class="nav-content collapse">
+        <li>
+          <a href="{{ route('admin.livres.create') }}" class="{{request()->routeIs('admin.livres.create') ? 'active' : ''}}">
+            <i class="bi bi-circle"></i><span>Ajouter un livre</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ route('admin.livres.index') }}" class="{{request()->routeIs('admin.livres.index') ? 'active' : ''}}">
+            <i class="bi bi-circle"></i><span>Liste des livres</span>
+          </a>
+        </li>
+      </ul>
+    </li> --}}
+
+    <li class="nav-item">
+      <a @class(['nav-link ', 'collapsed' => !request()->routeIs('admin.livres.*')]) data-bs-target="#blog-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
+        <i class="bi bi-book"></i><span>Gestion des livres</span>
+        <i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="blog-nav"  @class(['nav-content', 'collapse', 'show' => request()->routeIs('admin.livres.*')]) style="">
         <li>
           <a href="{{ route('admin.livres.create') }}" class="{{request()->routeIs('admin.livres.create') ? 'active' : ''}}">
             <i class="bi bi-circle"></i><span>Ajouter un livre</span>

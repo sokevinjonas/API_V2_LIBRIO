@@ -24,7 +24,6 @@ Route::get('account/verify/{email}', [LandingPageController::class, 'verifyEmail
 // Authentification
 Route::get('login', [AuthentificationController::class, 'loginForm'])->name('login');
 Route::post('login_new_user', [AuthentificationController::class, 'authenticate'])->name('authenticate');
-
 // Admin Panel
 Route::prefix('admin')->name('admin.')->group(function () {
     // Route::post('logout', [AuthController::class, 'logout'])->name('logout');

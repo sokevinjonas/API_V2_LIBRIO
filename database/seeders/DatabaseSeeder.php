@@ -27,5 +27,16 @@ class DatabaseSeeder extends Seeder
             'profile_picture' => null,
             'bio' => 'Administrateur principal du système.',
         ]);
+        User::factory()->create([
+            'name' => 'SO Jonas K',
+            'email' => 'sokevin7@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+            'terms' => true,
+            'country' => 'BF',
+            'accountType' => 'admin',
+            'profile_picture' => null,
+            'bio' => 'Administrateur principal du système.',
+        ]);
     }
 }
