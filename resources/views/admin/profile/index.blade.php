@@ -58,7 +58,6 @@
               <div class="col-lg-9 col-md-8">{{ $user->created_at->format('d/m/Y') }}</div>
             </div>
           </div>
-
           <!-- Profile Edit -->
           <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
             <!-- Profile Edit Form -->

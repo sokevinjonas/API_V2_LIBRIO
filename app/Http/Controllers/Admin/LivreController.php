@@ -126,25 +126,36 @@ class LivreController extends Controller
             mkdir($folderPath, 0755, true); // Crée le dossier avec permissions
         }
 
-        // Mise à jour de l'image de couverture
+       // Mise à jour de l'image de couverture
         $coverImagePath = $livre->cover_image;
         if ($request->hasFile('cover_image')) {
+            // Nettoyage du nom du fichier
+            $originalName = $request->file('cover_image')->getClientOriginalName();
+            $cleanedName = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', pathinfo($originalName, PATHINFO_FILENAME));
+            $extension = $request->file('cover_image')->extension();
+
             $coverImagePath = $request->file('cover_image')->storeAs(
                 "books/{$folderName}",
-                'cover_image.' . $request->file('cover_image')->extension(),
+                $cleanedName . '.' . $extension,
                 'public'
-            );
+            ); 
         }
 
         // Mise à jour du fichier PDF
         $pdfPath = $livre->url;
         if ($request->hasFile('url')) {
+            // Nettoyage du nom du fichier
+            $originalName = $request->file('url')->getClientOriginalName();
+            $cleanedName = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', pathinfo($originalName, PATHINFO_FILENAME));
+            $extension = $request->file('url')->extension();
+
             $pdfPath = $request->file('url')->storeAs(
                 "books/{$folderName}",
-                'book_file.' . $request->file('url')->extension(),
+                $cleanedName . '.' . $extension,
                 'public'
             );
         }
+
 
         // Mise à jour du livre
         $livre->update([

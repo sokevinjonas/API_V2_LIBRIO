@@ -19,7 +19,8 @@ class LivresRepository
    }
 
    public function apiShowLivre(Livre $livre){
-    dd($livre);
+    // dd($livre);
+    return $livre;
    }
 }
 
